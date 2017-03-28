@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-const unsigned char KEY[] = "pwd12";
+const char HELP_STRING[] = "./arcfour <text> <key>\n";
 
 // Implements the key-scheduling algorithm of RC4. This generates the
 // s-box (standard component of symmetric key algorithms) by first filling
@@ -59,7 +59,7 @@ void prga(unsigned char dest[], unsigned char s[], size_t len)
 //
 // After the s-box and cipher been generated, text is bit-wise XOR'd with
 // the cipher.
-void crypt(char* dest, char* text, unsigned char* key)
+void crypt(unsigned char* dest, unsigned char* text, unsigned char* key)
 {
 	// Initialize the sbox array
 	unsigned char sbox[256];
@@ -71,12 +71,12 @@ void crypt(char* dest, char* text, unsigned char* key)
 	// is a pointer in the function.
 	// To use the strlen function here, we have to cast
 	// the unsigned char array to a char array.
-	ksa_sbox(sbox, key, strlen((char*)key));
+	ksa_sbox((unsigned char*) sbox, (unsigned char*) key, strlen((char*) key));
 
 	unsigned char stream[strlen((char*)sbox)];
 	prga(stream, sbox, strlen((char*)sbox));
 
-	for (int i = 0; i < strlen(text); i++) {
+	for (int i = 0; i < strlen((char*) text); i++) {
 		// ^ = XOR
 		dest[i] = (char)(text[i]^stream[i]);
 	}
@@ -84,9 +84,18 @@ void crypt(char* dest, char* text, unsigned char* key)
 
 int main(int argc, char ** argv)
 {
-	unsigned char key[] = "MyKeyIsSecret";
-	char text[] = "Hello, World!";
-	char encrypted_text[strlen(text)];
+	if (argc <= 1) {
+		printf("%s", HELP_STRING);
+		return -1;
+	}
+
+	unsigned char text[strlen(argv[1])];
+	strcpy((char*)text, argv[1]);
+
+	unsigned char key[strlen(argv[2])];
+	strcpy((char*)key, argv[2]);
+
+	unsigned char encrypted_text[strlen((char*) text)];
 
 	crypt(encrypted_text, text, key);
 
