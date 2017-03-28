@@ -71,7 +71,7 @@ void crypt(unsigned char* dest, unsigned char* text, unsigned char* key)
 	// is a pointer in the function.
 	// To use the strlen function here, we have to cast
 	// the unsigned char array to a char array.
-	ksa_sbox((unsigned char*) sbox, (unsigned char*) key, strlen((char*) key));
+	ksa_sbox(sbox, key, strlen((char*) key));
 
 	unsigned char stream[strlen((char*)sbox)];
 	prga(stream, sbox, strlen((char*)sbox));
