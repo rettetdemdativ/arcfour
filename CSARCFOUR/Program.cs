@@ -53,7 +53,7 @@ namespace ConsoleApplication
                 var temp = S[i];
                 S[i] = S[j];
                 S[j] = temp;
-                keystream[i] = S[(S[i] + S[j]) % 256];
+                keystream[x] = S[(S[i] + S[j]) % 256];
             }
             return keystream;
         }
