@@ -43,13 +43,13 @@ void prga(unsigned char dest[], unsigned char s[], size_t len)
 {
 	uint8_t i = 0, j = 0, t = 0;
 
-	for (int i = 0; i < len; i++) {
+	for (int x = 0; x < len; x++) {
 		i = (i + 1) % 256;
 		j = (j + s[i]) % 256;
 		t = s[i];
 		s[j] = s[i];
 		s[j] = t;
-		dest[i] = s[(s[i] + s[j]) % 256];
+		dest[x] = s[(s[i] + s[j]) % 256];
 	}
 }
 
